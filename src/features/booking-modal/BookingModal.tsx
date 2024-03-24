@@ -1,102 +1,103 @@
 import { useState, Fragment, SyntheticEvent } from "react"
 import styles from "./BookingModal.module.css"
 // import { useGetQuotesQuery } from "./quotesApiSlice"
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Snackbar from '@mui/material/Snackbar';
-import SnackbarContent from '@mui/material/SnackbarContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import Card from "@mui/material/Card"
+import CardActions from "@mui/material/CardActions"
+import CardContent from "@mui/material/CardContent"
+import CardHeader from "@mui/material/CardHeader"
+import Button from "@mui/material/Button"
+import Typography from "@mui/material/Typography"
+import TextField from "@mui/material/TextField"
+import Modal from "@mui/material/Modal"
+import Box from "@mui/material/Box"
+import Snackbar from "@mui/material/Snackbar"
+import SnackbarContent from "@mui/material/SnackbarContent"
+import IconButton from "@mui/material/IconButton"
+import CloseIcon from "@mui/icons-material/Close"
 import {
   bookAppointment,
   updateAppointment,
   cancelAppointment,
   openModal,
-  closeModal
-} from '../../state/actions';
-import { useDispatch, useSelector } from "react-redux";
+  closeModal,
+} from "../../state/actions"
+import { useDispatch, useSelector } from "react-redux"
 
 export interface BookingModalProps {
-  open?: boolean;
+  open?: boolean
 }
 
 export const BookingModal = (props: BookingModalProps) => {
-  const {
-    open
-  } = props;
+  const { open } = props
 
   const selectedAppointmentId = useSelector(
-    (state) => state.selectedAppointmentId
-  );
-  const slots = useSelector((state) => state.slots);
-  const selectedSlot = slots.find((s) => s.id === selectedAppointmentId);
+    state => state.selectedAppointmentId,
+  )
+  const slots = useSelector(state => state.slots)
+  const selectedSlot = slots.find(s => s.id === selectedAppointmentId)
 
-  const [name, setName] = useState<string>(selectedSlot.name || "");
-  const [phone, setPhone] = useState<string>(selectedSlot.phone || "");
-  const [nameError, setNameError] = useState<boolean>(false);
-  const [phoneError, setPhoneError] = useState<boolean>(false);
+  const [name, setName] = useState<string>(selectedSlot.name || "")
+  const [phone, setPhone] = useState<string>(selectedSlot.phone || "")
+  const [nameError, setNameError] = useState<boolean>(false)
+  const [phoneError, setPhoneError] = useState<boolean>(false)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleClose = () => {
-    dispatch(closeModal());
+    dispatch(closeModal())
   }
 
   const validateInputs = () => {
-    setNameError(!name);
-    setPhoneError(!phone);
-    return !!name && !!phone;
+    setNameError(!name)
+    setPhoneError(!phone)
+    return !!name && !!phone
   }
 
   const handleBook = () => {
     if (!validateInputs()) {
-      setWarningOpen(true);
-      return;
+      setWarningOpen(true)
+      return
     }
-    dispatch(bookAppointment(selectedSlot.id, name, phone));
+    dispatch(bookAppointment(selectedSlot.id, name, phone))
   }
 
   const handleUpdate = () => {
     if (!validateInputs()) {
-      setWarningOpen(true);
-      return;
+      setWarningOpen(true)
+      return
     }
-    dispatch(updateAppointment(selectedSlot.id, name, phone));
+    dispatch(updateAppointment(selectedSlot.id, name, phone))
   }
 
   const handleCancellation = () => {
-    dispatch(cancelAppointment(selectedSlot.id, name, phone));
+    dispatch(cancelAppointment(selectedSlot.id, name, phone))
   }
 
-  const handleNameChange = (event) => {
-    if (!!event.target.value) setNameError(false);
-    setName(event.target.value);
+  const handleNameChange = event => {
+    if (!!event.target.value) setNameError(false)
+    setName(event.target.value)
   }
 
-  const handlePhoneChange = (event) => {
-    if (!!event.target.value) setPhoneError(false);
-    setPhone(event.target.value);
+  const handlePhoneChange = event => {
+    if (!!event.target.value) setPhoneError(false)
+    setPhone(event.target.value)
   }
 
-  const [warningOpen, setWarningOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false)
 
   const handleOpenSnackbar = () => {
-    setWarningOpen(true);
-  };
+    setWarningOpen(true)
+  }
 
-  const handleCloseSnackbar = (event: SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
+  const handleCloseSnackbar = (
+    event: SyntheticEvent | Event,
+    reason?: string,
+  ) => {
+    if (reason === "clickaway") {
+      return
     }
-    setWarningOpen(false);
-  };
+    setWarningOpen(false)
+  }
 
   return (
     <Modal
@@ -111,11 +112,9 @@ export const BookingModal = (props: BookingModalProps) => {
           <CardHeader
             title={
               <div className={styles.bookingModalHeaderContainer}>
-                <Typography
-                  variant="h6"
-                  className={styles.bookingModalHeader}
-                >
-                  Appointment {selectedSlot?.startTime} - {selectedSlot?.endTime}
+                <Typography variant="h6" className={styles.bookingModalHeader}>
+                  Appointment {selectedSlot?.startTime} -{" "}
+                  {selectedSlot?.endTime}
                 </Typography>
                 <IconButton
                   size="small"
@@ -130,7 +129,8 @@ export const BookingModal = (props: BookingModalProps) => {
           />
           <CardContent>
             <div>
-              Enter your information and a representative will follow up with you as soon as possible!
+              Enter your information and a representative will follow up with
+              you as soon as possible!
             </div>
             <div>
               <TextField
@@ -144,22 +144,36 @@ export const BookingModal = (props: BookingModalProps) => {
               />
             </div>
             <div>
-              <TextField required error={phoneError} id="phone-field" label="Phone" variant="standard" value={phone} onChange={handlePhoneChange} />
+              <TextField
+                required
+                error={phoneError}
+                id="phone-field"
+                label="Phone"
+                variant="standard"
+                value={phone}
+                onChange={handlePhoneChange}
+              />
             </div>
           </CardContent>
           <CardActions className={styles.bookingModalCardActions}>
-            {
-              !selectedSlot.booked
-              ? <Button size="medium" onClick={handleBook}>Book</Button>
-              : <>
+            {!selectedSlot.booked ? (
+              <Button size="medium" onClick={handleBook}>
+                Book
+              </Button>
+            ) : (
+              <>
                 <Button size="medium" onClick={handleUpdate}>
                   Update
                 </Button>
-                <Button size="medium" color="error" onClick={handleCancellation}>
+                <Button
+                  size="medium"
+                  color="error"
+                  onClick={handleCancellation}
+                >
                   Cancel
                 </Button>
               </>
-            }
+            )}
           </CardActions>
         </Card>
         <Snackbar
@@ -168,10 +182,10 @@ export const BookingModal = (props: BookingModalProps) => {
           autoHideDuration={200000}
           onClose={handleCloseSnackbar}
           className={styles.warningSnackbar}
-          >
+        >
           <SnackbarContent
             style={{
-              backgroundColor: '#ff604f',
+              backgroundColor: "#ff604f",
             }}
             message="Name and Phone must not be empty"
             action={

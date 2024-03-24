@@ -3,21 +3,21 @@ import {
   UPDATE_ACTION,
   CANCEL_ACTION,
   OPEN_MODAL,
-  CLOSE_MODAL
-} from "../actions";
+  CLOSE_MODAL,
+} from "../actions"
 
 export interface SlotDefinition {
-  id: string;
-  startTime: string;
-  endTime: string;
-  booked?: boolean;
-  name?: string;
-  phone?: string;
+  id: string
+  startTime: string
+  endTime: string
+  booked?: boolean
+  name?: string
+  phone?: string
 }
 
 export interface appState {
-  slots: SlotDefinition[];
-  selectedAppointmentId?: string;
+  slots: SlotDefinition[]
+  selectedAppointmentId?: string
 }
 
 export const initialState: appState = {
@@ -29,8 +29,8 @@ export const initialState: appState = {
     { id: "e", startTime: "1 PM", endTime: "2 PM" },
     { id: "f", startTime: "2 PM", endTime: "3 PM" },
     { id: "g", startTime: "3 PM", endTime: "4 PM" },
-    { id: "h", startTime: "4 PM", endTime: "5 PM" }
-  ]
+    { id: "h", startTime: "4 PM", endTime: "5 PM" },
+  ],
 }
 
 const mainReducer = (state: appState, action) => {
@@ -38,7 +38,7 @@ const mainReducer = (state: appState, action) => {
     case BOOK_ACTION:
       return {
         ...state,
-        slots: (state.slots.map((oldSlot) => {
+        slots: state.slots.map(oldSlot => {
           if (oldSlot.id === action.payload.id) {
             return {
               ...oldSlot,
@@ -49,13 +49,13 @@ const mainReducer = (state: appState, action) => {
           } else {
             return oldSlot
           }
-        })),
-        selectedAppointmentId: undefined
+        }),
+        selectedAppointmentId: undefined,
       }
     case UPDATE_ACTION:
       return {
         ...state,
-        slots: (state.slots.map((oldSlot) => {
+        slots: state.slots.map(oldSlot => {
           if (oldSlot.id === action.payload.id) {
             return {
               ...oldSlot,
@@ -66,13 +66,13 @@ const mainReducer = (state: appState, action) => {
           } else {
             return oldSlot
           }
-        })),
-        selectedAppointmentId: undefined
+        }),
+        selectedAppointmentId: undefined,
       }
     case CANCEL_ACTION:
       return {
         ...state,
-        slots: (state.slots.map((oldSlot) => {
+        slots: state.slots.map(oldSlot => {
           if (oldSlot.id === action.payload) {
             return {
               ...oldSlot,
@@ -83,22 +83,22 @@ const mainReducer = (state: appState, action) => {
           } else {
             return oldSlot
           }
-        })),
-        selectedAppointmentId: undefined
+        }),
+        selectedAppointmentId: undefined,
       }
     case OPEN_MODAL:
       return {
         ...state,
-        selectedAppointmentId: action.payload
+        selectedAppointmentId: action.payload,
       }
     case CLOSE_MODAL:
       return {
         ...state,
-        selectedAppointmentId: undefined
+        selectedAppointmentId: undefined,
       }
     default:
       return state
   }
-};
+}
 
-export default mainReducer;
+export default mainReducer
