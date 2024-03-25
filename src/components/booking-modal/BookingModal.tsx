@@ -188,7 +188,7 @@ export const BookingModal = (props: BookingModalProps) => {
         <Snackbar
           id="warning-snackbar"
           open={warningOpen}
-          autoHideDuration={200000}
+          autoHideDuration={6000}
           onClose={handleCloseSnackbar}
           className={styles.warningSnackbar}
         >
