@@ -1,7 +1,7 @@
 import {
   BOOK_ACTION,
   UPDATE_ACTION,
-  CANCEL_ACTION,
+  DELETE_ACTION,
   OPEN_MODAL,
   CLOSE_MODAL,
 } from "../actions"
@@ -69,7 +69,7 @@ const mainReducer = (state: appState, action) => {
         }),
         selectedAppointmentId: undefined,
       }
-    case CANCEL_ACTION:
+    case DELETE_ACTION:
       return {
         ...state,
         slots: state.slots.map(oldSlot => {

@@ -1,23 +1,23 @@
 import { useState, Fragment, SyntheticEvent } from "react"
 import styles from "./BookingModal.module.css"
-// import { useGetQuotesQuery } from "./quotesApiSlice"
-import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
-import CardContent from "@mui/material/CardContent"
-import CardHeader from "@mui/material/CardHeader"
-import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
-import TextField from "@mui/material/TextField"
-import Modal from "@mui/material/Modal"
-import Box from "@mui/material/Box"
-import Snackbar from "@mui/material/Snackbar"
-import SnackbarContent from "@mui/material/SnackbarContent"
-import IconButton from "@mui/material/IconButton"
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  IconButton,
+  Modal,
+  Snackbar,
+  SnackbarContent,
+  TextField,
+  Typography
+} from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
 import {
   bookAppointment,
   updateAppointment,
-  cancelAppointment,
+  deleteAppointment,
   openModal,
   closeModal,
 } from "../../state/actions"
@@ -69,8 +69,8 @@ export const BookingModal = (props: BookingModalProps) => {
     dispatch(updateAppointment(selectedSlot.id, name, phone))
   }
 
-  const handleCancellation = () => {
-    dispatch(cancelAppointment(selectedSlot.id, name, phone))
+  const handleDeletion = () => {
+    dispatch(deleteAppointment(selectedSlot.id, name, phone))
   }
 
   const handleNameChange = event => {
@@ -168,9 +168,9 @@ export const BookingModal = (props: BookingModalProps) => {
                 <Button
                   size="medium"
                   color="error"
-                  onClick={handleCancellation}
+                  onClick={handleDeletion}
                 >
-                  Cancel
+                  delete
                 </Button>
               </>
             )}
@@ -206,3 +206,4 @@ export const BookingModal = (props: BookingModalProps) => {
     </Modal>
   )
 }
+export default BookingModal;

@@ -41,10 +41,10 @@ export const Slot = (props: SlotProps) => {
       variant="outlined"
       className={styles.slot}
       sx={
-        booked && {
+        booked ? {
           border: "1px solid red",
           backgroundColor: "#ffefef",
-        }
+        } : {}
       }
     >
       <CardHeader
@@ -67,3 +67,4 @@ export const Slot = (props: SlotProps) => {
     </Card>
   )
 }
+export default Slot;

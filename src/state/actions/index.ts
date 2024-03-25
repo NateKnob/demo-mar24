@@ -1,6 +1,6 @@
 export const BOOK_ACTION = "BOOK_ACTION"
 export const UPDATE_ACTION = "UPDATE_ACTION"
-export const CANCEL_ACTION = "CANCEL_ACTION"
+export const DELETE_ACTION = "DELETE_ACTION"
 export const OPEN_MODAL = "OPEN_MODAL"
 export const CLOSE_MODAL = "CLOSE_MODAL"
 
@@ -22,8 +22,8 @@ export const updateAppointment = (id: string, name: string, phone: string) => ({
   },
 })
 
-export const cancelAppointment = (id: string) => ({
-  type: CANCEL_ACTION,
+export const deleteAppointment = (id: string) => ({
+  type: DELETE_ACTION,
   payload: id,
 })
 

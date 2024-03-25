@@ -1,11 +1,9 @@
 import "./App.css"
-import { Counter } from "./features/counter/Counter"
-import { Quotes } from "./features/quotes/Quotes"
-import { Slot, SlotProps } from "./features/slot/Slot"
-import { BookingModal } from "./features/booking-modal/BookingModal"
-import Typography from "@mui/material/Typography"
 import logo from "./assets/cox_automotive_logo.jpg"
 import { useSelector } from "react-redux"
+import Slot from "./components/slot";
+import BookingModal from "./components/booking-modal";
+import { Typography } from "@mui/material"
 
 import "@fontsource/roboto/300.css"
 import "@fontsource/roboto/400.css"
