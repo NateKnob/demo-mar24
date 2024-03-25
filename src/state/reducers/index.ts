@@ -1,10 +1,5 @@
-import {
-  BOOK_ACTION,
-  UPDATE_ACTION,
-  DELETE_ACTION,
-  OPEN_MODAL,
-  CLOSE_MODAL,
-} from "../actions"
+import type { AppAction } from "../actions";
+import { ActionType } from "../actions"
 
 export interface SlotDefinition {
   id: string
@@ -15,12 +10,12 @@ export interface SlotDefinition {
   phone?: string
 }
 
-export interface appState {
+export interface RootState {
   slots: SlotDefinition[]
   selectedAppointmentId?: string
 }
 
-export const initialState: appState = {
+export const initialState: RootState = {
   slots: [
     { id: "a", startTime: "9 AM", endTime: "10 AM" },
     { id: "b", startTime: "10 AM", endTime: "11 AM" },
@@ -33,12 +28,15 @@ export const initialState: appState = {
   ],
 }
 
-const mainReducer = (state: appState, action) => {
+const mainReducer = (
+  state: RootState | Partial<RootState> | undefined,
+  action: AppAction,
+) => {
   switch (action.type) {
-    case BOOK_ACTION:
+    case ActionType.BOOK_ACTION:
       return {
         ...state,
-        slots: state.slots.map(oldSlot => {
+        slots: state?.slots?.map((oldSlot: SlotDefinition) => {
           if (oldSlot.id === action.payload.id) {
             return {
               ...oldSlot,
@@ -52,10 +50,10 @@ const mainReducer = (state: appState, action) => {
         }),
         selectedAppointmentId: undefined,
       }
-    case UPDATE_ACTION:
+    case ActionType.UPDATE_ACTION:
       return {
         ...state,
-        slots: state.slots.map(oldSlot => {
+        slots: state?.slots?.map((oldSlot: SlotDefinition) => {
           if (oldSlot.id === action.payload.id) {
             return {
               ...oldSlot,
@@ -69,10 +67,10 @@ const mainReducer = (state: appState, action) => {
         }),
         selectedAppointmentId: undefined,
       }
-    case DELETE_ACTION:
+    case ActionType.DELETE_ACTION:
       return {
         ...state,
-        slots: state.slots.map(oldSlot => {
+        slots: state?.slots?.map((oldSlot: SlotDefinition) => {
           if (oldSlot.id === action.payload) {
             return {
               ...oldSlot,
@@ -86,12 +84,12 @@ const mainReducer = (state: appState, action) => {
         }),
         selectedAppointmentId: undefined,
       }
-    case OPEN_MODAL:
+    case ActionType.OPEN_MODAL:
       return {
         ...state,
         selectedAppointmentId: action.payload,
       }
-    case CLOSE_MODAL:
+    case ActionType.CLOSE_MODAL:
       return {
         ...state,
         selectedAppointmentId: undefined,

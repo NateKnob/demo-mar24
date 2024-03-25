@@ -1,8 +1,9 @@
 import "./App.css"
 import logo from "./assets/cox_automotive_logo.jpg"
-import { useSelector } from "react-redux"
-import Slot from "./components/slot";
-import BookingModal from "./components/booking-modal";
+import { useAppSelector } from "./app/hooks"
+import Slot from "./components/slot"
+import type { SlotDefinition } from "./state/reducers"
+import BookingModal from "./components/booking-modal"
 import { Typography } from "@mui/material"
 
 import "@fontsource/roboto/300.css"
@@ -11,10 +12,10 @@ import "@fontsource/roboto/500.css"
 import "@fontsource/roboto/700.css"
 
 const App = () => {
-  const selectedAppointmentId = useSelector(
-    state => state.selectedAppointmentId,
+  const selectedAppointmentId = useAppSelector(
+    state => state?.selectedAppointmentId,
   )
-  const slots = useSelector(state => state.slots)
+  const slots = useAppSelector(state => state?.slots)
 
   return (
     <div className="App">
@@ -23,8 +24,8 @@ const App = () => {
         <Typography variant="h5" sx={{ margin: "20px" }}>
           <b>Today's Appointments</b>
         </Typography>
-        {slots.map(slotDef => {
-          return <Slot {...slotDef} key={slotDef.id} />
+        {slots?.map((slot: SlotDefinition) => {
+          return <Slot {...slot} key={slot.id} />
         })}
         {selectedAppointmentId && <BookingModal open={true} />}
       </header>

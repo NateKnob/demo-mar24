@@ -1,3 +1,3 @@
-import Slot from "./Slot";
+import Slot from "./Slot"
 
-export default Slot;
+export default Slot

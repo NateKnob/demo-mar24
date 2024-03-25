@@ -1,4 +1,5 @@
-import { useState, Fragment, SyntheticEvent } from "react"
+import type { SyntheticEvent , ChangeEvent } from "react"
+import { useState, Fragment } from "react"
 import styles from "./BookingModal.module.css"
 import {
   Button,
@@ -11,17 +12,17 @@ import {
   Snackbar,
   SnackbarContent,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
 import {
   bookAppointment,
   updateAppointment,
   deleteAppointment,
-  openModal,
   closeModal,
 } from "../../state/actions"
-import { useDispatch, useSelector } from "react-redux"
+import type { SlotDefinition } from "../../state/reducers"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 
 export interface BookingModalProps {
   open?: boolean
@@ -30,18 +31,20 @@ export interface BookingModalProps {
 export const BookingModal = (props: BookingModalProps) => {
   const { open } = props
 
-  const selectedAppointmentId = useSelector(
-    state => state.selectedAppointmentId,
+  const selectedAppointmentId = useAppSelector(
+    state => state?.selectedAppointmentId,
   )
-  const slots = useSelector(state => state.slots)
-  const selectedSlot = slots.find(s => s.id === selectedAppointmentId)
+  const slots = useAppSelector(state => state?.slots)
+  const selectedSlot = slots?.find(
+    (s: SlotDefinition) => s?.id === selectedAppointmentId,
+  )
 
-  const [name, setName] = useState<string>(selectedSlot.name || "")
-  const [phone, setPhone] = useState<string>(selectedSlot.phone || "")
+  const [name, setName] = useState<string>(selectedSlot?.name || "")
+  const [phone, setPhone] = useState<string>(selectedSlot?.phone || "")
   const [nameError, setNameError] = useState<boolean>(false)
   const [phoneError, setPhoneError] = useState<boolean>(false)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleClose = () => {
     dispatch(closeModal())
@@ -55,32 +58,42 @@ export const BookingModal = (props: BookingModalProps) => {
 
   const handleBook = () => {
     if (!validateInputs()) {
-      setWarningOpen(true)
+      handleOpenSnackbar()
       return
     }
-    dispatch(bookAppointment(selectedSlot.id, name, phone))
+    if (selectedSlot && selectedSlot.id) {
+      dispatch(bookAppointment(selectedSlot.id, name, phone))
+    }
   }
 
   const handleUpdate = () => {
     if (!validateInputs()) {
-      setWarningOpen(true)
+      handleOpenSnackbar()
       return
     }
-    dispatch(updateAppointment(selectedSlot.id, name, phone))
+    if (selectedSlot && selectedSlot.id) {
+      dispatch(updateAppointment(selectedSlot.id, name, phone))
+    }
   }
 
   const handleDeletion = () => {
-    dispatch(deleteAppointment(selectedSlot.id, name, phone))
+    if (selectedSlot && selectedSlot.id) {
+      dispatch(deleteAppointment(selectedSlot.id))
+    }
   }
 
-  const handleNameChange = event => {
-    if (!!event.target.value) setNameError(false)
-    setName(event.target.value)
+  const handleNameChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if ((event?.target as HTMLInputElement)?.value) setNameError(false)
+    setName((event?.target as HTMLInputElement)?.value)
   }
 
-  const handlePhoneChange = event => {
-    if (!!event.target.value) setPhoneError(false)
-    setPhone(event.target.value)
+  const handlePhoneChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if ((event?.target as HTMLInputElement)?.value) setPhoneError(false)
+    setPhone((event?.target as HTMLInputElement)?.value)
   }
 
   const [warningOpen, setWarningOpen] = useState(false)
@@ -101,7 +114,7 @@ export const BookingModal = (props: BookingModalProps) => {
 
   return (
     <Modal
-      open={open}
+      open={!!open}
       onClose={handleClose}
       className={styles.bookingModal}
       aria-labelledby="modal-title"
@@ -156,7 +169,7 @@ export const BookingModal = (props: BookingModalProps) => {
             </div>
           </CardContent>
           <CardActions className={styles.bookingModalCardActions}>
-            {!selectedSlot.booked ? (
+            {!selectedSlot?.booked ? (
               <Button size="medium" onClick={handleBook}>
                 Book
               </Button>
@@ -165,11 +178,7 @@ export const BookingModal = (props: BookingModalProps) => {
                 <Button size="medium" onClick={handleUpdate}>
                   Update
                 </Button>
-                <Button
-                  size="medium"
-                  color="error"
-                  onClick={handleDeletion}
-                >
+                <Button size="medium" color="error" onClick={handleDeletion}>
                   delete
                 </Button>
               </>
@@ -206,4 +215,4 @@ export const BookingModal = (props: BookingModalProps) => {
     </Modal>
   )
 }
-export default BookingModal;
+export default BookingModal

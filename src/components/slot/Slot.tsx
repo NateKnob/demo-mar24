@@ -1,23 +1,14 @@
-import { useState } from "react"
 import styles from "./Slot.module.css"
-// import { useGetQuotesQuery } from "./quotesApiSlice"
-import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
-import CardContent from "@mui/material/CardContent"
-import CardHeader from "@mui/material/CardHeader"
-import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
+import {
+  Button,
+  Card,
+  CardActions,
+  CardHeader,
+  Typography,
+} from "@mui/material"
 import { openModal } from "../../state/actions"
-import { useDispatch } from "react-redux"
-
-export interface SlotProps {
-  id: string
-  startTime: string
-  endTime: string
-  booked?: boolean
-  name?: string
-  phone?: string
-}
+import { useAppDispatch } from "../../app/hooks"
+import type { SlotDefinition as SlotProps } from "../../state/reducers"
 
 export const Slot = (props: SlotProps) => {
   const {
@@ -26,11 +17,9 @@ export const Slot = (props: SlotProps) => {
     endTime = 2,
     booked = false,
     name = "",
-    phone = "",
   } = props
-  const [numberOfQuotes, setNumberOfQuotes] = useState(10)
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const handleClick = () => {
     dispatch(openModal(id))
@@ -41,10 +30,12 @@ export const Slot = (props: SlotProps) => {
       variant="outlined"
       className={styles.slot}
       sx={
-        booked ? {
-          border: "1px solid red",
-          backgroundColor: "#ffefef",
-        } : {}
+        booked
+          ? {
+              border: "1px solid red",
+              backgroundColor: "#ffefef",
+            }
+          : {}
       }
     >
       <CardHeader
@@ -67,4 +58,4 @@ export const Slot = (props: SlotProps) => {
     </Card>
   )
 }
-export default Slot;
+export default Slot

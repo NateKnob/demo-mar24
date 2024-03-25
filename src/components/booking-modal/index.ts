@@ -1,3 +1,3 @@
 import BookingModal from "./BookingModal"
 
-export default BookingModal;
+export default BookingModal
