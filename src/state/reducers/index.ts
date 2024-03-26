@@ -8,6 +8,7 @@ export interface SlotDefinition {
   booked?: boolean
   name?: string
   phone?: string
+  email?: string
 }
 
 export interface RootState {
@@ -34,22 +35,6 @@ const mainReducer = (
 ) => {
   switch (action.type) {
     case ActionType.BOOK_ACTION:
-      return {
-        ...state,
-        slots: state?.slots?.map((oldSlot: SlotDefinition) => {
-          if (oldSlot.id === action.payload.id) {
-            return {
-              ...oldSlot,
-              booked: true,
-              name: action.payload.name,
-              phone: action.payload.phone,
-            }
-          } else {
-            return oldSlot
-          }
-        }),
-        selectedAppointmentId: undefined,
-      }
     case ActionType.UPDATE_ACTION:
       return {
         ...state,
@@ -60,6 +45,7 @@ const mainReducer = (
               booked: true,
               name: action.payload.name,
               phone: action.payload.phone,
+              email: action.payload.email,
             }
           } else {
             return oldSlot
@@ -77,6 +63,7 @@ const mainReducer = (
               booked: false,
               name: undefined,
               phone: undefined,
+              email: undefined
             }
           } else {
             return oldSlot

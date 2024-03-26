@@ -40,9 +40,11 @@ export const BookingModal = (props: BookingModalProps) => {
   )
 
   const [name, setName] = useState<string>(selectedSlot?.name || "")
-  const [phone, setPhone] = useState<string>(selectedSlot?.phone || "")
   const [nameError, setNameError] = useState<boolean>(false)
+  const [phone, setPhone] = useState<string>(selectedSlot?.phone || "")
   const [phoneError, setPhoneError] = useState<boolean>(false)
+  const [email, setEmail] = useState<string>(selectedSlot?.email || "")
+  const [emailError, setEmailError] = useState<boolean>(false)
 
   const dispatch = useAppDispatch()
 
@@ -53,7 +55,8 @@ export const BookingModal = (props: BookingModalProps) => {
   const validateInputs = () => {
     setNameError(!name)
     setPhoneError(!phone)
-    return !!name && !!phone
+    setEmailError(!email)
+    return !!name && !!phone && !!email
   }
 
   const handleBook = () => {
@@ -62,7 +65,7 @@ export const BookingModal = (props: BookingModalProps) => {
       return
     }
     if (selectedSlot && selectedSlot.id) {
-      dispatch(bookAppointment(selectedSlot.id, name, phone))
+      dispatch(bookAppointment(selectedSlot.id, name, phone, email))
     }
   }
 
@@ -72,7 +75,7 @@ export const BookingModal = (props: BookingModalProps) => {
       return
     }
     if (selectedSlot && selectedSlot.id) {
-      dispatch(updateAppointment(selectedSlot.id, name, phone))
+      dispatch(updateAppointment(selectedSlot.id, name, phone, email))
     }
   }
 
@@ -94,6 +97,13 @@ export const BookingModal = (props: BookingModalProps) => {
   ) => {
     if ((event?.target as HTMLInputElement)?.value) setPhoneError(false)
     setPhone((event?.target as HTMLInputElement)?.value)
+  }
+
+  const handleEmailChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    if ((event?.target as HTMLInputElement)?.value) setEmailError(false)
+    setEmail((event?.target as HTMLInputElement)?.value)
   }
 
   const [warningOpen, setWarningOpen] = useState(false)
@@ -167,6 +177,17 @@ export const BookingModal = (props: BookingModalProps) => {
                 onChange={handlePhoneChange}
               />
             </div>
+            <div>
+              <TextField
+                required
+                error={emailError}
+                id="email-field"
+                label="Email"
+                variant="standard"
+                value={email}
+                onChange={handleEmailChange}
+              />
+            </div>
           </CardContent>
           <CardActions className={styles.bookingModalCardActions}>
             {!selectedSlot?.booked ? (
@@ -179,7 +200,7 @@ export const BookingModal = (props: BookingModalProps) => {
                   Update
                 </Button>
                 <Button size="medium" color="error" onClick={handleDeletion}>
-                  delete
+                  Delete
                 </Button>
               </>
             )}
@@ -196,7 +217,7 @@ export const BookingModal = (props: BookingModalProps) => {
             style={{
               backgroundColor: "#ff604f",
             }}
-            message="Name and Phone must not be empty"
+            message="Name, Phone, and Email must not be empty"
             action={
               <Fragment>
                 <IconButton

@@ -12,6 +12,7 @@ export interface BookAppointmentAction {
     id: string
     name: string
     phone: string
+    email: string
   }
 }
 
@@ -19,12 +20,14 @@ export const bookAppointment = (
   id: string,
   name: string,
   phone: string,
+  email: string,
 ): BookAppointmentAction => ({
   type: ActionType.BOOK_ACTION,
   payload: {
     id,
     name,
     phone,
+    email
   },
 })
 
@@ -34,6 +37,7 @@ export interface UpdateAppointmentAction {
     id: string
     name: string
     phone: string
+    email: string
   }
 }
 
@@ -41,12 +45,14 @@ export const updateAppointment = (
   id: string,
   name: string,
   phone: string,
+  email: string
 ): UpdateAppointmentAction => ({
   type: ActionType.UPDATE_ACTION,
   payload: {
     id,
     name,
     phone,
+    email
   },
 })
 
